@@ -1,0 +1,1 @@
+# Blog made with django
