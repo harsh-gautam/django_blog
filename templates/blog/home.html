@@ -4,6 +4,19 @@
     Blog-Home
 {% endblock title %}
 
+{% block blogactive %}active{% endblock blogactive %}
+
 {% block content %}
-    This is Blog Home
+    <div class="container p-0 my-3">
+        <p class="fs-2 fw-bolder text-dark mb-3">Explore blogs</p>
+        {% for post in allPosts %}
+        <div class="card mb-4">
+            <div class="card-body">
+              <span class="card-title fs-2">{{ post.title }} </span><span class="fs-6 fw-lighter">  by </span><span class="fs-5 fw-lighter">{{post.author}}</span>
+              <p class="card-text mt-3">{{ post.content|slice:"300" }}...</p>
+              <a href="/blog/{{post.slug}}" class="btn btn-primary btn-sm">Continue reading</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 {% endblock content %}

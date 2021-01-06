@@ -4,9 +4,18 @@
     Home-Contact
 {% endblock title %}
 
+{% block contactactive %}active{% endblock contactactive %}
+
 {% block content %}
-    <div class="container my-3">
-    <h3>Contact Admin</h3>
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        <strong>Message: </strong> {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    
+    <div class="container my-4">
+    <h3 class="fw-bold mb-4">Contact Us</h3>
     <form method="post" action="/contact" class="form-group my-3">{% csrf_token %}
         <div class="form-floating mb-3">
             <input type="text" name="name" class="form-control" id="nameInput" placeholder="name@example.com" required>
@@ -20,7 +29,54 @@
             <textarea class="form-control" name="query" placeholder="Leave your complain here" id="complainTextarea" style="height: 150px" required></textarea>
             <label for="complainTextarea">Your complain goes here</label>
         </div>
-        <input type="submit" class="btn btn-dark mt-3" value="CONTACT">
+        <button type="submit" id="submit" class="btn btn-dark mt-3">Submit</button>
     </form>
     </div>
+
 {% endblock content %}
+
+{% block script %}
+<script>
+    // document.querySelector('#nameInput').value = "";
+    // document.querySelector('#emailInput').value = "";
+    // document.querySelector('#complainTextarea').value = "";
+    submitBtn = document.querySelector('#submit');
+    function send_ajax(url, csrftoken, data){
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true)
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr.onprogress = function(){
+            submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...`;
+        };
+
+        xhr.onload = function() {
+        if (this.status >= 200 && this.status < 400) {
+            var resp = this.response;
+            submitBtn.innerHTML = `Submit`;
+        } else {
+            console.log('We reached our target server, but it returned an error');
+        }
+        };
+
+        xhr.onerror = function() {
+        // There was a connection error of some sort
+        };
+        xhr.send(JSON.stringify(data));
+    }
+
+    // submitBtn.addEventListener('click', event => {
+    //     url = '/contact';
+    //     data = {
+    //         'name': document.querySelector('#nameInput').value,
+    //         'email': document.querySelector('#emailInput').value,
+    //         'query': document.querySelector('#complainTextarea').value
+    //     }
+    //     csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    //     send_ajax(url, csrfToken, data);
+    //     event.preventDefault();
+        
+    // });
+</script>
+{% endblock script %}

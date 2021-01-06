@@ -5,5 +5,12 @@
 {% endblock title %}
 
 {% block content %}
-    This is Blog Post
+    <div class="container my-4">
+        <p class="title fs-1 fw-bold my-3">{{ post.title }}</p>
+        <p class="author fs-5 fw-lighter">Author: <a href="#" class="text-decoration-none">{{ post.author }}</a></p>
+        <p class="fs-5 fw-lighter">{{ post.timestamp }}</p>
+        <hr class="my-3">
+        <p class="fs-4 lh-base">{{ post.content }}</p>
+
+    </div>
 {% endblock content %}

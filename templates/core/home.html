@@ -4,6 +4,39 @@
     Home
 {% endblock title %}
 
+{% block homeactive %}active{% endblock homeactive %}
+
 {% block content %}
-    This is Website Home
+    <div class="container bg-secondary bg-gradient rounded-3 my-4 py-3 px-4">
+        <div class="row">
+            <div class="col col-md-8">
+                <p class="fs-1 fw-bolder text-light">Welcome to CodersCoffe</h2>
+                <p class="fs-5 my-4 text-light">A place for coders to share there ideas, knowledge and stories</p>
+                <a href="#" class="btn btn-outline-light">Get Started</a>
+            </div>
+            <div class="col col-md-4">
+                <img src="" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div class="container p-0 my-3">
+        <p class="fs-2 fw-bolder text-dark mb-3">Popular blogs</p>
+        <div class="card mb-2">
+            <h5 class="card-header">Featured</h5>
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+        <div class="card mb-2">
+            <h5 class="card-header">Featured</h5>
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    </div>
 {% endblock content %}
