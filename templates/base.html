@@ -90,7 +90,7 @@
 
     <!-- Alerts -->
     {% for message in messages %}
-    <div class="alert alert-{% if message.tags is 'error' %}danger{% else %}{{message.tags}}{% endif %} alert-dismissible fade show" role="alert">
+    <div class="alert alert-{% if message.tags in 'error' %}danger{% else %}{{message.tags}}{% endif %} alert-dismissible fade show" role="alert">
         <strong>Message: </strong> {{ message }}
         <button id="alert-btn" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
@@ -185,6 +185,7 @@
                         <p class="fs-6 fw-italic">Not a part of CodersCoffe? <a href="#" onclick="loadSignupModal()">Sign Up</a></p>
                     </div>
                     <form action="/login" method="post" class="row g-3" novalidate>{% csrf_token %}
+                        <input type="hidden" name="current_url" value="{{ request.get_full_path }}">
                         <div class="form-floating mb-2 col-md-12">
                             <input type="text" class="form-control" id="loginUsername" name="loginUsername"
                                 placeholder="username" required>

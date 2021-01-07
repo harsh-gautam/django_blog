@@ -1,16 +1,43 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Blog-Post
+Blog-Post
 {% endblock title %}
 
 {% block content %}
-    <div class="container my-4">
-        <p class="title fs-1 fw-bold my-3">{{ post.title }}</p>
-        <p class="author fs-5 fw-lighter">Author: <a href="#" class="text-decoration-none">{{ post.author }}</a></p>
-        <p class="fs-5 fw-lighter">{{ post.timestamp }}</p>
-        <hr class="my-3">
-        <p class="fs-4 lh-base">{{ post.content }}</p>
-
+<div class="container my-4">
+    <p class="title fs-1 fw-bold my-3">{{ post.title }}</p>
+    <p class="author fs-5 fw-lighter">Author: <a href="#" class="text-decoration-none">{{ post.author }}</a></p>
+    <p class="fs-5 fw-lighter">{{ post.timestamp }}</p>
+    <hr class="my-3">
+    <p class="fs-4 lh-base">{{ post.content }}</p>
+    <hr class="my-5">
+    <h3 class="fw-bolder mb-4">Comments({{comments.count}})</h3>
+    {% if user.is_authenticated %}
+    <form action="/blog/post_comment" method="post" class="row g-3 mx-1"> {% csrf_token %}
+        <input type="hidden" name="post_id" value="{{ post.post_id }}">
+        <div class="col-11">
+            <label for="inputComment" class="visually-hidden">Comment Text</label>
+            <input type="text" class="form-control" name="comment" id="inputComment" placeholder="Enter your comment here">
+          </div>
+          <div class="col-1">
+            <button type="submit" class="btn btn-primary mb-3">Comment</button>
+          </div>
+    </form>
+    {% else %}
+    <p class="m-2 p-1 fs-5 fst-italic text-center">You must be logged in to comment.</p>
+    {% endif %}
+    <div class="row m-2">
+        {% for comment in comments %}
+        <div class="col-2 border mb-2">
+            <b class="mb-0">{{comment.user.username}}</b>
+            <p class="mb-0">{{comment.timestamp}}</p>
+        </div>
+        <div class="col-10 border mb-2">
+            {{comment.comment}}
+        </div>
+        {% endfor %}
     </div>
+
+</div>
 {% endblock content %}

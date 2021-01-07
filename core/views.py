@@ -70,16 +70,18 @@ def handleLogin(request):
     if request.method == "POST":
         username = request.POST['loginUsername']
         password = request.POST['loginPass']
+        current_url = request.POST['current_url']
+        print(current_url)
 
         user = authenticate(username=username, password=password)
 
         if user is not None:
             login(request, user)
             messages.success(request, f'Welcome {username}! Your log in was successful.')
-            return redirect('/')
+            return redirect(current_url)
         else:
             messages.error(request, 'Invalid Credential! Please try again.')
-            return redirect('/')
+            return redirect(current_url)
     else:
         return Http404("Page Not Found")
         
