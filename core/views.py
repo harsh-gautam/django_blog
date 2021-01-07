@@ -1,5 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse, Http404
+from django.urls import reverse
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from core.models import ContactForm
 from blog.models import Post
 # Create your views here.
@@ -36,3 +39,53 @@ def search(request):
 
     context = {"allPosts": allPosts, "query": query}
     return render(request, "core/search.html", context)
+
+def handleSignup(request):
+    if request.method == "POST":
+        # Get the post data
+        name = request.POST['name'].lower()
+        email = request.POST['email'].lower()
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        name_splitted = name.split()
+        if len(name_splitted) == 1:
+            fname = name_splitted[0]
+        elif len(name_splitted) == 2:
+            fname, lname = name_splitted[0], name_splitted[1]
+        elif len(name_splitted) > 2:
+            fname, lname = name_splitted[0], name_splitted[-1]
+
+        user = User.objects.create_user(username, email, password)
+        user.first_name = fname
+        user.last_name = lname
+        user.save()
+
+        messages.success(request, "Your account has been successfully created. You can login now.")
+        return redirect("/")
+    else:
+        raise Http404("Page not found")
+
+def handleLogin(request):
+    if request.method == "POST":
+        username = request.POST['loginUsername']
+        password = request.POST['loginPass']
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            messages.success(request, f'Welcome {username}! Your log in was successful.')
+            return redirect('/')
+        else:
+            messages.error(request, 'Invalid Credential! Please try again.')
+            return redirect('/')
+    else:
+        return Http404("Page Not Found")
+        
+
+def handleLogout(request):
+    logout(request)
+    messages.warning(request, 'Logged out successfully')
+
+    return redirect('/')

@@ -11,3 +11,8 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title + " by " + self.author
+
+class Comment(models.Model):
+    com_id = models.AutoField(primary_key=True)
+    comment = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -16,10 +16,16 @@
         .base {
             max-width: 1500px;
         }
+
+        .hidden{
+            visibilty: hidden !important;
+            display: none;
+        }
     </style>
 </head>
 
 <body>
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container base">
             <a class="navbar-brand" href="#">CodersCoffe</a>
@@ -55,6 +61,18 @@
                     <button class="btn btn-outline-light" type="submit">Search</button>
                 </form>
 
+                {% if user.is_authenticated %}
+                <div class="btn-group">
+                    <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Welcome {{ user }}!
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">My Pofile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+                {% else %}
                 <!-- Button trigger for sign up modal -->
                 <button type="button" class="btn btn-outline-light me-2 mt-lg-0 mt-sm-2" data-bs-toggle="modal" data-bs-target="#signupModal">
                     Get Started
@@ -64,10 +82,19 @@
                 <button type="button" class="btn btn-outline-light me-2 mt-lg-0 mt-sm-2" data-bs-toggle="modal" data-bs-target="#loginModal">
                     Login
                 </button>
+                {% endif %}
 
             </div>
         </div>
     </nav>
+
+    <!-- Alerts -->
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags is 'error' %}danger{% else %}{{message.tags}}{% endif %} alert-dismissible fade show" role="alert">
+        <strong>Message: </strong> {{ message }}
+        <button id="alert-btn" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
 
     <!-- Sign Up Modal -->
     <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
@@ -81,7 +108,7 @@
                     <div class="col-12">
                         <p class="fs-6 fw-italic">Already a part of CodersCoffe? <a href="#" onclick="loadLoginModal()">Login</a></p>
                     </div>
-                    <form class="row g-3 needs-validation" novalidate>
+                    <form action="/signup" method='post' class="row g-3 needs-validation" novalidate>{% csrf_token %}
                         <div class="form-floating mb-2 col-md-12">
                             <input type="text" class="form-control" name="name" id="inputName" placeholder="Name"
                                 required>
@@ -102,15 +129,15 @@
                             <label class="ps-3" for="inputUsername" class="form-label">Username</label>
                             <div class="input-group has-validation">
                                 <span class="input-group-text" id="inputGroupPrepend">@</span>
-                                <input type="text" class="form-control" id="inputUsername" name="username
-                                    aria-describedby=" inputGroupPrepend" placeholder="Username" required>
+                                <input type="text" class="form-control" id="inputUsername" name="username"
+                                    aria-describedby="inputGroupPrepend" placeholder="Username" required>
                                 <div class="invalid-feedback">
                                     Please choose a username.
                                 </div>
                             </div>
                         </div>
                         <div class="form-floating mb-2 col-md-12">
-                            <input type="password" class="form-control" name="email" id="inputPass"
+                            <input type="password" class="form-control" name="password" id="inputPass"
                                 placeholder="password" required>
                             <label class="ps-3" for="inputPass">Password</label>
                             <div class="invalid-feedback">
@@ -118,7 +145,7 @@
                             </div>
                         </div>
                         <div class="form-floating mb-2 col-md-12">
-                            <input type="password" class="form-control" name="email" id="confirmPass"
+                            <input type="password" class="form-control" id="confirmPass"
                                 placeholder="confirm password" required>
                             <label class="ps-3" for="confirmPass">Confirm Password</label>
                             <div class="invalid-feedback">
@@ -157,9 +184,9 @@
                     <div class="col-12">
                         <p class="fs-6 fw-italic">Not a part of CodersCoffe? <a href="#" onclick="loadSignupModal()">Sign Up</a></p>
                     </div>
-                    <form class="row g-3" novalidate>
+                    <form action="/login" method="post" class="row g-3" novalidate>{% csrf_token %}
                         <div class="form-floating mb-2 col-md-12">
-                            <input type="text" class="form-control" id="loginUsername" name="username"
+                            <input type="text" class="form-control" id="loginUsername" name="loginUsername"
                                 placeholder="username" required>
                             <label class="ps-3" for="loginUsername">Username</label>
                             <div class="invalid-feedback">
@@ -167,7 +194,7 @@
                             </div>
                         </div>
                         <div class="form-floating mb-2 col-md-12">
-                            <input type="password" class="form-control" name="email" id="loginPass"
+                            <input type="password" class="form-control" name="loginPass" id="loginPass"
                                 placeholder="password" required>
                             <label class="ps-3" for="loginPass">Password</label>
                             <div class="invalid-feedback">
@@ -216,6 +243,14 @@
                 })
         })()
 
+
+        let alertBtn = document.querySelector('#alert-btn')
+        if(alertBtn != null){
+        setInterval(()=>{
+                alertBtn.click();
+        }, 10000);
+            }
+        
     </script>
     {% block script %}
     {% endblock script %}
