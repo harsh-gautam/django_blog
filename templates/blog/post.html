@@ -13,7 +13,7 @@ Blog-Post
     <p class="author fs-5 fw-lighter">Author: <a href="#" class="text-decoration-none">{{ post.author }}</a></p>
     <p class="fs-5 fw-lighter">{{ post.timestamp }}</p>
     <hr class="my-3">
-    <p class="fs-5 lh-base">{{ post.content }}</p>
+    <p class="fs-5 lh-base">{{ post.content|safe }}</p>
     <hr class="my-5">
     <h3 class="fw-bolder mb-4">Comments ({{comments.count}})</h3>
     {% if user.is_authenticated %}
