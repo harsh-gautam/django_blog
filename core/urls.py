@@ -6,8 +6,9 @@ urlpatterns = [
     path('about', about, name="About"),
     path('contact', contact, name="Contact"),
     path('search', search, name="Search"),
+
+    # APIs
     path('signup', handleSignup, name="Signup"),
     path('login', handleLogin, name="Login"),
     path('logout', handleLogout, name="Logout"),
-
 ]

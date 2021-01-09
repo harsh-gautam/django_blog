@@ -10,7 +10,6 @@ def home(request):
     return render(request, 'core/home.html')
 
 def contact(request):
-    
     if request.method == "POST":
         name = request.POST["name"]
         email = request.POST["email"]
@@ -27,7 +26,7 @@ def about(request):
     return render(request, 'core/about.html')
 
 def search(request):
-    query = request.GET['search']
+    query = request.GET['keyword']
     if len(query) > 50:
         allPosts = Post.objects.none()
     else:
@@ -84,7 +83,6 @@ def handleLogin(request):
             return redirect(current_url)
     else:
         return Http404("Page Not Found")
-        
 
 def handleLogout(request):
     logout(request)
