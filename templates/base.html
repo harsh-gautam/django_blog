@@ -21,7 +21,9 @@
             visibilty: hidden !important;
             display: none;
         }
+    {% block css %}{% endblock css %}
     </style>
+    {% block head %}{% endblock head %}
 </head>
 
 <body>
@@ -68,6 +70,7 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">My Pofile</a></li>
+                        <li><a class="dropdown-item" href="/blog/create">Create Post</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/logout">Logout</a></li>
                     </ul>

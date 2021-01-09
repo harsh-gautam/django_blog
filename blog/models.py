@@ -9,7 +9,7 @@ class Post(models.Model):
     author = models.CharField(max_length=80)
     content = models.TextField()
     slug = models.CharField(max_length=255)
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.title + " by " + self.author
